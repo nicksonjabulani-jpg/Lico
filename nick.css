@@ -1,0 +1,25 @@
+{
+  "name": "NickFX Student App",
+  "short_name": "NickFX",
+  "description": "NickFX Student App – License login, broker connection, AI MiniBot, start/pause bot, and floating bot bubble. Progressive Web App (PWA) for Android.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f2f2f2",
+  "theme_color": "#111111",
+  "icons": [
+    {
+      "src": "https://via.placeholder.com/192.png?text=NickFX",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://via.placeholder.com/512.png?text=NickFX",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "scope": "./",
+  "categories": ["business", "finance", "education"],
+  "lang": "en-US"
+}

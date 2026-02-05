@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NickFX Student App</title>
+
+  <!-- Link to external manifest.json -->
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f2f2f2; }
+    .container { padding:20px; }
+    h2 { text-align:center; margin-bottom:15px; }
+    input, button { padding:10px; margin:5px 0; width:100%; border-radius:5px; border:1px solid #ccc; }
+    button { cursor:pointer; }
+    #minibot { background:#111; color:#0f0; padding:10px; border-radius:10px; margin-top:10px; max-height:150px; overflow-y:auto; }
+    #bubble { position:fixed; bottom:20px; right:20px; background:green; width:50px; height:50px; border-radius:25px; color:#fff; font-weight:bold; display:flex; justify-content:center; align-items:center; cursor:pointer; font-size:20px; }
+  </style>
+</head>
+<body>
+  <!-- LOGIN SCREEN -->
+  <div class="container" id="loginScreen">
+    <h2>NickFX Student Login</h2>
+    <input type="text" id="license" placeholder="Enter License Key" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div class="container" id="dashboard" style="display:none;">
+    <h2>Broker Connection</h2>
+    <input type="text" id="server" placeholder="Broker Server" />
+    <input type="text" id="login" placeholder="Login" />
+    <input type="password" id="password" placeholder="Password" />
+    <input type="text" id="lot" placeholder="Lot Size" />
+    <button onclick="toggleBot()" id="botBtn">Start Bot</button>
+    <button onclick="deleteLicense()" style="background:red; color:#fff;">Delete License</button>
+
+    <div id="minibot" style="display:none;"></div>
+    <div id="bubble" style="display:none;" onclick="toggleMiniBubble()">$</div>
+  </div>
+
+  <script>
+    // ====== LOGIN ======
+    function login() {
+      const license = document.getElementById('license').value;
+      if(license.length > 5){
+        document.getElementById('loginScreen').style.display='none';
+        document.getElementById('dashboard').style.display='block';
+      } else {
+        alert('Invalid License Key');
+      }
+    }
+
+    // ====== BOT LOGIC ======
+    let botRunning = false;
+    let logs = [];
+    let botInterval = null;
+
+    function toggleBot() {
+      botRunning = !botRunning;
+      const minibot = document.getElementById('minibot');
+      const bubble = document.getElementById('bubble');
+      const btn = document.getElementById('botBtn');
+
+      if(botRunning){
+        btn.innerText = 'Pause Bot';
+        minibot.style.display='block';
+        bubble.style.display='none';
+        botInterval = setInterval(()=> {
+          const pairs = ['XAUUSD','NAS100','US30','GER30'];
+          const actions = ['Buying','Selling'];
+          const pair = pairs[Math.floor(Math.random()*pairs.length)];
+          const action = actions[Math.floor(Math.random()*actions.length)];
+          logs.push(`AI Bot: ${action} ${pair}...`);
+          minibot.innerHTML = logs.slice(-6).join('<br>');
+        }, 3000);
+      } else {
+        btn.innerText = 'Start Bot';
+        clearInterval(botInterval);
+        minibot.style.display='none';
+        bubble.style.display='flex';
+      }
+    }
+
+    function toggleMiniBubble(){
+      const minibot = document.getElementById('minibot');
+      const bubble = document.getElementById('bubble');
+      minibot.style.display='block';
+      bubble.style.display='none';
+    }
+
+    function deleteLicense(){
+      alert('License Deleted');
+      location.reload();
+    }
+  </script>
+</body>
+</html>
